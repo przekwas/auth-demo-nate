@@ -6,10 +6,15 @@ import { shouldIStayOrShouldIGoNow } from '../services/login';
 
 const Home: React.FC<HomeProps> = props => {
 	useEffect(() => {
+		//use helper function to see if we stay or go
 		shouldIStayOrShouldIGoNow().then(decision => {
 			if (!decision) {
+				//decision was false?
+				//route to login!
 				props.history.push('/login');
 			} else {
+				//decision was true?
+				//fetch protected data!
 				api('/api/test').then(data => console.log(data));
 			}
 		});

@@ -9,10 +9,14 @@ const Login: React.FC<LoginProps> = props => {
 	const [password, setPassword] = useState<string>('password123');
 
 	useEffect(() => {
+		//use helper function to see if we stay or go
 		shouldIStayOrShouldIGoNow().then(decision => {
 			if (decision) {
+				//decision was true?
+				//route back to home!
 				props.history.push('/');
 			}
+			//otherwise just stay here to login :P
 		});
 	}, []);
 
