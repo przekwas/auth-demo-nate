@@ -1,31 +1,26 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { api, Token } from '../services/api-services';
+import { api } from '../services/api';
+import { shouldIStayOrShouldIGoNow } from '../services/login';
 
 const Home: React.FC<HomeProps> = props => {
+	useEffect(() => {
+		shouldIStayOrShouldIGoNow().then(decision => {
+			if (!decision) {
+				props.history.push('/login');
+			} else {
+				api('/api/test').then(data => console.log(data));
+			}
+		});
+	}, []);
 
-    useEffect(() => {
-        if (Token === null) {
-            props.history.push('/login');
-        } else {
-            api('/auth/tokens/validate').then(result => {
-                if (result?.msg === 'loggedIn') {
-                    api('/api/test')
-                    .then(res => console.log(res));
-                } else {
-                    props.history.push('/login');
-                }
-            });
-        }
-    }, []);
-
-    return (
-        <div>
-            <h1 className="text-center">Home Component</h1>
-        </div>
-    );
-}
+	return (
+		<div>
+			<h1 className="text-center">Home Component</h1>
+		</div>
+	);
+};
 
 interface HomeProps extends RouteComponentProps {}
 
